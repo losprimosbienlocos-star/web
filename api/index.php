@@ -68,13 +68,15 @@ $cursos = supabase_request(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>Solicitud de Inscripción</title>
+    <title>Solicitud de Inscripción Digital</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css">
 
     <link rel="stylesheet" href="styles.css">
 
@@ -83,12 +85,12 @@ $cursos = supabase_request(
             theme: {
                 extend: {
                     colors: {
-                        primary: "#03251d",
-                        secondary: "#326b00",
-                        background: "#f8f9ff",
+                        primary: "#003b2f",
+                        secondary: "#73bc25",
+                        background: "#f7fbf2",
                         surface: "#ffffff",
-                        outline: "#c1c8c4",
-                        container: "#eff4ff"
+                        outline: "#cfe6bf",
+                        container: "#eef8e4"
                     },
                     fontFamily: {
                         body: ["Montserrat"]
@@ -118,11 +120,11 @@ $cursos = supabase_request(
         <div class="text-white max-w-2xl">
 
             <h2 class="text-4xl md:text-6xl font-extrabold mb-4">
-                Solicitud de Inscripción
+                Solicitud de <span class="text-secondary">Inscripción Digital</span>
             </h2>
 
             <p class="text-lg md:text-xl text-white/90">
-                Gestión moderna de capacitaciones industriales y agrícolas.
+                Innovación y Capacitación Agrícola e Industrial | Cengicaña Digital
             </p>
 
         </div>
@@ -158,7 +160,7 @@ $cursos = supabase_request(
 
                 <!-- NOMBRE Y CUI -->
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="identity-grid grid grid-cols-1 md:grid-cols-2 gap-5">
 
                     <div>
                         <label class="label-form">
@@ -260,17 +262,44 @@ $cursos = supabase_request(
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 
-    <div>
-        <label class="label-form">
+    <div class="country-combobox">
+        <label class="label-form" for="pais">
             País
         </label>
 
-        <input
-            type="text"
-            name="pais"
-            class="input-form"
-            required
-        >
+        <div class="country-input-shell">
+            <span id="countrySelectedFlag" class="country-selected-flag" aria-hidden="true"></span>
+
+            <input
+                type="text"
+                name="pais"
+                id="pais"
+                class="input-form country-input"
+                placeholder="Seleccione o busque un país"
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-controls="countryDropdown"
+                required
+            >
+
+            <button
+                type="button"
+                id="countryDropdownToggle"
+                class="country-dropdown-toggle"
+                aria-label="Mostrar países"
+            >
+                <span class="material-symbols-outlined">
+                    expand_more
+                </span>
+            </button>
+        </div>
+
+        <div
+            id="countryDropdown"
+            class="country-dropdown hidden"
+            role="listbox"
+        ></div>
     </div>
 
     <div>
@@ -487,7 +516,7 @@ $cursos = supabase_request(
                         <button
                             type="button"
                             data-tipo-capacitacion="Curso"
-                            class="tipo-capacitacion-btn px-5 py-2 rounded-xl bg-green-600 text-white font-semibold shadow hover:scale-105 transition"
+                            class="tipo-capacitacion-btn px-5 py-2 rounded-xl bg-secondary text-white font-semibold shadow hover:scale-105 transition"
                         >
                             Cursos
                         </button>
@@ -495,7 +524,7 @@ $cursos = supabase_request(
                         <button
                             type="button"
                             data-tipo-capacitacion="Diplomado"
-                            class="tipo-capacitacion-btn px-5 py-2 rounded-xl bg-blue-600 text-white font-semibold shadow hover:scale-105 transition"
+                            class="tipo-capacitacion-btn px-5 py-2 rounded-xl bg-[#5fa61f] text-white font-semibold shadow hover:scale-105 transition"
                         >
                             Diplomados
                         </button>
@@ -503,7 +532,7 @@ $cursos = supabase_request(
                         <button
                             type="button"
                             data-tipo-capacitacion="Seminario"
-                            class="tipo-capacitacion-btn px-5 py-2 rounded-xl bg-yellow-500 text-white font-semibold shadow hover:scale-105 transition"
+                            class="tipo-capacitacion-btn px-5 py-2 rounded-xl bg-[#4d8f1b] text-white font-semibold shadow hover:scale-105 transition"
                         >
                             Seminarios
                         </button>
@@ -512,15 +541,24 @@ $cursos = supabase_request(
 
                 </div>
 
+<div class="mt-6 mb-4">
+    <h3 class="text-xl font-bold text-primary">
+Seleccione el curso de su interés
+    </h3>
 
+    <p class="text-sm text-gray-500 mt-1">
+Marque una o más opciones según sus necesidades de formación y desarrollo profesional.
+    </p>
+</div>
                 <!-- CURSOS -->
 
                 <div class="mt-8">
 
-                    <label id="tipoCursoLabel" class="label-form mb-4 block">
-                        <?= $tipo ?>
-                    </label>
-
+                    <!--<label id="tipoCursoLabel" class="label-form mb-4 block">
+                        <<?= $tipo ?>-->
+                   <!-- </label>
+                       -->
+            
                     <div class="relative mb-4">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                             search
@@ -528,7 +566,7 @@ $cursos = supabase_request(
                         <input
                             type="search"
                             id="buscadorCursos"
-                            class="input-form pl-12"
+                            class="input-form search-input"
                             placeholder="Buscar curso, diplomado o seminario"
                             autocomplete="off"
                         >
@@ -645,11 +683,10 @@ $cursos = supabase_request(
                             check_circle
                         </span>
 
-                        <p>Capacitación especializada.</p>
+                        <p>Tu Futuro Profesional Comienza Aquí</p>
                     </div>
 
                 </div>
-
             </div>
 
             <div class="bg-white rounded-2xl shadow-md overflow-hidden">
@@ -660,13 +697,12 @@ $cursos = supabase_request(
                 >
 
                 <div class="p-5">
-
-                    <h3 class="font-bold text-xl text-primary mb-4">
-                        Cengicaña Digital 
-                        Para Inscribirte A Los Cursos Que Quieras
-                    </h3>
-
-                    
+                    <h3
+    class="font-bold text-[#73C943] text-[18px] leading-[1.5]"
+    style="text-align:justify;text-align-last:center;"
+>
+    Completa el siguiente formulario para formalizar tu registro en nuestros programas de formación especializada.
+</h3>
 
                 </div>
 

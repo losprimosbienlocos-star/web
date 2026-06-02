@@ -206,6 +206,79 @@ if (!empty($grado_academico_id)) {
 }
 
 $mysqli->close();
+require_once __DIR__ . '/correo.php';
+
+function esGuatemala($pais)
+{
+    $pais = mb_strtolower(
+        trim($pais),
+        'UTF-8'
+    );
+
+    return in_array(
+        $pais,
+        [
+            'guatemala',
+            'guate',
+            'gt'
+        ]
+    );
+}
+
+if ($tipo_pago === 'Ingenio') {
+
+    $template =
+        __DIR__
+        . '/templates/pago_ingenio.html';
+
+}
+elseif (
+    $tipo_pago === 'Propio'
+    &&
+    esGuatemala($pais)
+) {
+
+    $template =
+        __DIR__
+        . '/templates/pago_propio_nacional.html';
+
+}
+else {
+
+    $template =
+        __DIR__
+        . '/templates/pago_propio_internacional.html';
+}
+
+$htmlCorreo =
+    file_get_contents($template);
+
+$htmlCorreo =
+    str_replace(
+        '@NOMBRE',
+        htmlspecialchars(
+            $nombre_participante
+        ),
+        $htmlCorreo
+    );
+
+try {
+
+    enviarCorreoHTML(
+        $correo,
+        $nombre_participante,
+        'Confirmación de inscripción',
+        $htmlCorreo
+    );
+
+} catch (Throwable $e) {
+
+    error_log(
+        'Error correo: '
+        . $e->getMessage()
+    );
+
+}
 ?>
 <!DOCTYPE html>
 <html class="light" lang="es">
@@ -221,9 +294,9 @@ $mysqli->close();
             theme: {
                 extend: {
                     colors: {
-                        primary: "#03251d",
-                        secondary: "#326b00",
-                        background: "#f4f7f6",
+                        primary: "#003b2f",
+                        secondary: "#73bc25",
+                        background: "#f7fbf2",
                         surface: "#ffffff"
                     },
                     fontFamily: {
@@ -245,7 +318,7 @@ $mysqli->close();
             position: relative;
             border-radius: 50%;
             box-sizing: content-box;
-            border: 4px solid #4CAF50;
+            border: 4px solid #73bc25;
         }
         .check-icon::after {
             content: '';
@@ -254,7 +327,7 @@ $mysqli->close();
             top: 14px;
             width: 16px;
             height: 32px;
-            border: solid #4CAF50;
+            border: solid #73bc25;
             border-width: 0 4px 4px 0;
             transform: rotate(45deg);
         }
