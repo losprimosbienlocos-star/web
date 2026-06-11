@@ -443,7 +443,7 @@ $cursos = supabase_request(
             Recomendación
         </option>
 
-        <option value="Comunidad">
+        <option value="Comunidad WhatsApp">
             Comunidad WhatsApp
         </option>
 
