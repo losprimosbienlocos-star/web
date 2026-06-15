@@ -243,6 +243,21 @@ if (isset($_GET['download']) && $_GET['download'] === 'excel') {
 
         <!-- Tabla de Registros -->
         <div class="bg-white border border-gray-200 rounded-3xl shadow-xl overflow-hidden">
+            <!-- Buscador -->
+<div class="p-4 border-b border-gray-200 bg-gray-50">
+    <div class="relative">
+        <span class="material-symbols-outlined absolute left-3 top-3 text-gray-400">
+            search
+        </span>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar por nombre, CUI, correo, teléfono, curso o ingenio..."
+            class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-secondary"
+        >
+    </div>
+</div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
@@ -264,8 +279,9 @@ if (isset($_GET['download']) && $_GET['download'] === 'excel') {
                     <tbody class="divide-y divide-gray-150 text-sm">
                         <?php if (count($solicitudes) > 0): ?>
                             <?php foreach ($solicitudes as $row): ?>
-                                <tr class="hover:bg-gray-50 transition">
-                                    <td class="p-4 font-bold text-gray-400">#<?= $row['id_solicitud'] ?></td>
+    
+<tr class="fila-solicitud hover:bg-gray-50 transition">
+    <td class="p-4 font-bold text-gray-400">#<?= $row['id_solicitud'] ?></td>
                                     <td class="p-4 text-gray-500 text-xs">
                                         <?= date("d/m/Y H:i", strtotime($row['fecha_solicitud'])) ?>
                                     </td>
@@ -325,6 +341,31 @@ if (isset($_GET['download']) && $_GET['download'] === 'excel') {
         </div>
 
     </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buscador = document.getElementById("searchInput");
+
+    buscador.addEventListener("keyup", function () {
+
+        let textoBusqueda = this.value.toLowerCase();
+
+        document.querySelectorAll(".fila-solicitud").forEach(function (fila) {
+
+            let contenido = fila.textContent.toLowerCase();
+
+            if (contenido.includes(textoBusqueda)) {
+                fila.style.display = "";
+            } else {
+                fila.style.display = "none";
+            }
+
+        });
+
+    });
+
+});
+</script>
 
 </body>
 </html>
