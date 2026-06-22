@@ -9,6 +9,10 @@
     {
       "handle": "filesystem"
     },
+       {
+      "src": "/Public/(.*)",
+      "dest": "/Public/imagen.png"
+    },
     {
       "src": "/admin/?",
       "dest": "/api/registros.php"
